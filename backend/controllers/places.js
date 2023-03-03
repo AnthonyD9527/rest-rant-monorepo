@@ -28,6 +28,9 @@ router.get('/', async (req, res) => {
 
 
 router.get('/:placeId', async (req, res) => {
+    if(req.currentUser?.role !== 'admin'){
+        return res.status(403).json({ message: 'You are not allowed to edit places'})
+    }
     let placeId = Number(req.params.placeId)
     if (isNaN(placeId)) {
         res.status(404).json({ message: `Invalid id "${placeId}"` })
@@ -120,6 +123,9 @@ router.post('/:placeId/comments', async (req, res) => {
 })
 
 router.delete('/:placeId/comments/:commentId', async (req, res) => {
+    if(req.currentUser?.role !== 'admin'){
+        return res.status(403).json({ message: 'You are not allowed to delete places'})
+    }
     let placeId = Number(req.params.placeId)
     let commentId = Number(req.params.commentId)
 
